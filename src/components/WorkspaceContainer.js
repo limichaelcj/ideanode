@@ -70,7 +70,10 @@ class WorkspaceContainer extends Component {
   }
 }
 
-const mapStateToProps = state => ({...state.node});
+const mapStateToProps = state => ({
+  ...state.node,
+  client: state.client
+});
 
 const mapDispatchToProps = dispatch => ({
   moveNode: (id,x,y) => dispatch(moveNode(id,x,y))

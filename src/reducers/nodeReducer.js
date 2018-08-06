@@ -3,30 +3,21 @@ export default (state = {
     ideas: {},
     connections: []
   },
-  uniqueID: 1,
-  client: {
-    x: 0,
-    y: 0
-  }
+  uniqueID: 1
 }, action) => {
   switch(action.type){
     case 'ADD_NODE':
-      var id=action.payload.idea.id;
+      var id=action.payload.id;
       return {
         ...state,
         file: {
           ...state.file,
           ideas: {
             ...state.file.ideas,
-            [id]: action.payload.idea
+            [id]: action.payload
           }
         },
-        uniqueID: id+1,
-        client: {
-          ...state.client,
-          x: action.payload.client.x,
-          y: action.payload.client.y
-        }
+        uniqueID: id+1
       }
     case 'MOVE_NODE':
       var id=action.payload.id;

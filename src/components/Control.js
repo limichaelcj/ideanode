@@ -9,8 +9,12 @@ const Control = (props)=> {
       <button
         id='button-addNode'
         onMouseDown={props.addNode}
-      >Add Node
+      >Add
       </button>
+      <button
+        id='button-deleteNode'
+        onClick={props.deleteNode}
+      >Delete</button>
     </div>
   );
 }

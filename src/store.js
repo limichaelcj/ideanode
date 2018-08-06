@@ -9,11 +9,12 @@ export default function configureStore(){
         ideas: {},
         connections: []
       },
-      uniqueID: 1,
-      client: {
-        x: 0,
-        y: 0
-      }
+      uniqueID: 1
+    },
+    client: {
+      mode: 'view',
+      x: 0,
+      y: 0
     }
   }
   return createStore(

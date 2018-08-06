@@ -5,10 +5,11 @@ const state: {
       connections: []
     },
     uniqueID: 1,
-    client: {
-      x: 0,
-      y: 0
-    }
+  },
+  client: {
+    mode: 'view',
+    x: 0,
+    y: 0
   }
 }
 
