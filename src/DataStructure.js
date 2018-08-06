@@ -4,7 +4,11 @@ const state: {
       ideas: {},
       connections: []
     },
-    uniqueID: 1
+    uniqueID: 1,
+    client: {
+      x: 0,
+      y: 0
+    }
   }
 }
 

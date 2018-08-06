@@ -13,9 +13,8 @@ class ControlContainer extends Component {
 
   handleAddNode(e){
     e.preventDefault();
-    console.log(this.props.file);
-    let id=this.props.uniqueID;
-    this.props.addNode(id);
+    //add new node at location of cursor
+    this.props.addNode(this.props.uniqueID, e.pageX, e.pageY);
   }
 
   render(){
@@ -32,7 +31,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addNode: (id)=>dispatch(addNode(id))
+  addNode: (id,x,y)=>dispatch(addNode(id,x,y))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ControlContainer);

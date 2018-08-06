@@ -8,7 +8,7 @@ const Control = (props)=> {
     <div id='Control'>
       <button
         id='button-addNode'
-        onClick={props.addNode}
+        onMouseDown={props.addNode}
       >Add Node
       </button>
     </div>

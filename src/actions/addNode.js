@@ -4,24 +4,30 @@
 //the unique ID is the nodeFile object key for the node
 //this ID should be reduced upon save to make up for deleted node space
 
-export const addNode = (id)  => {
+export const addNode = (id,x,y)  => {
   return {
     type: 'ADD_NODE',
     payload: {
-      id: id,
-      dim: {
-        x: 100,
-        y: 100,
-        h: 100,
-        w: 100
+      idea: {
+        id: id,
+        dim: {
+          x: x-50,
+          y: y-50,
+          h: 100,
+          w: 100
+        },
+        text: {
+          head: 'New Idea',
+          body: 'Text',
+          foot: 'Info'
+        },
+        input: [],
+        output: []
       },
-      text: {
-        head: 'New Idea',
-        body: 'Text',
-        foot: 'Info'
-      },
-      input: [],
-      output: []
+      client: {
+        x: x,
+        y: y
+      }
     }
   }
 }

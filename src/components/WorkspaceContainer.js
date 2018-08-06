@@ -20,20 +20,20 @@ class WorkspaceContainer extends Component {
       e.target, //element being dragged
       e.clientX, //cursor current X position
       e.clientY, //cursor current Y position
-      this.props.moveNode, //the redux action to be called to save state
+      'mouseup', //closing mouse event
+      this.props.moveNode //the redux action to be called to save state
     );
   }
 
   //translate file data to JSX
   constructIdeas(ideas){
-    console.log(ideas);
     let ideaJSX=[];
     for(let key in ideas){
       let i=ideas[key];
       ideaJSX.push(
         <div
           key={i.id}
-          id={i.id}
+          id={'node'+i.id}
           className='Node'
           style={{
             top: i.dim.y,
@@ -48,11 +48,22 @@ class WorkspaceContainer extends Component {
     return ideaJSX;
   }
 
+  componentDidUpdate(prevProps){
+    if(prevProps.uniqueID===this.props.uniqueID-1){
+      dragElement(
+        document.getElementById('node'+prevProps.uniqueID),
+        this.props.client.x,
+        this.props.client.y,
+        'click',
+        this.props.moveNode
+      )
+    }
+  }
+
   render(){
-    let file=this.constructIdeas(this.props.file.ideas);
     return(
       <Workspace
-        file={file}
+        file={this.constructIdeas(this.props.file.ideas)}
       />
     );
   }
