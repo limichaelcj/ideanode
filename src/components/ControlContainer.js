@@ -13,8 +13,8 @@ class ControlContainer extends Component {
 
   handleAddNode(e){
     e.preventDefault();
+    e.target.onmouseup=(e)=>this.props.addNode(this.props.uniqueID, e.pageX, e.pageY);
     //add new node at location of cursor
-    this.props.addNode(this.props.uniqueID, e.pageX, e.pageY);
   }
 
   render(){

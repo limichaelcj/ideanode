@@ -49,12 +49,13 @@ class WorkspaceContainer extends Component {
   }
 
   componentDidUpdate(prevProps){
+    //When adding new node, enter drag element for new node
     if(prevProps.uniqueID===this.props.uniqueID-1){
       dragElement(
         document.getElementById('node'+prevProps.uniqueID),
         this.props.client.x,
         this.props.client.y,
-        'click',
+        'mousedown',
         this.props.moveNode
       )
     }

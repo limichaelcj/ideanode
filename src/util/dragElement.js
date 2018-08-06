@@ -15,7 +15,7 @@ function dragElement(elem,ix,iy,closeEvent,action){
   }
   function closeDrag(){
     document.onmousemove=null;
-    document.onmouseup=null;
+    document['on'+closeEvent]=null;
     //store position in state
     action(elem.id.slice(4),elem.offsetLeft,elem.offsetTop);
   }
