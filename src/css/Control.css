@@ -1,0 +1,11 @@
+#Control {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+p {
+  margin: auto 5px;
+}
+
+/*# sourceMappingURL=Control.css.map */
