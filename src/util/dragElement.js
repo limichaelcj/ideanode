@@ -1,7 +1,7 @@
 function dragElement(elem,ix,iy,action){
   var cx=ix;
   var cy=iy;
-  document.onmousemove=dragMove;
+  document.onmousemove=(e)=>requestAnimationFrame(()=>dragMove(e));
   document.onmouseup=closeDrag;
   function dragMove(e){
     e = e || window.event;
@@ -16,6 +16,8 @@ function dragElement(elem,ix,iy,action){
   function closeDrag(){
     document.onmousemove=null;
     document.onmouseup=null;
+    //store position in state
+    action(elem.id,elem.offsetLeft,elem.offsetTop);
   }
 }
 

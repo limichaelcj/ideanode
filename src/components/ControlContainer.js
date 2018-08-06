@@ -14,7 +14,9 @@ class ControlContainer extends Component {
   handleAddNode(e){
     e.preventDefault();
     console.log(this.props.file);
-    this.props.addNode(this.props.file.uniqueID);
+    let id=this.props.file.uniqueID;
+    this.props.addNode(id);
+
   }
 
   render(){

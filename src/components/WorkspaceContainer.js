@@ -16,7 +16,12 @@ class WorkspaceContainer extends Component {
   handleMouseDown(e){
     e = e || window.event;
     e.preventDefault();
-    dragElement(e.target, e.clientX, e.clientY,this.props.moveNode);
+    dragElement(
+      e.target, //element being dragged
+      e.clientX, //cursor current X position
+      e.clientY, //cursor current Y position
+      this.props.moveNode, //the redux action to be called to save state
+    );
   }
 
   //translate file data to JSX
