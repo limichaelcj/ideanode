@@ -14,22 +14,22 @@ class ControlContainer extends Component {
   handleAddNode(e){
     e.preventDefault();
     console.log(this.props.file);
-    let id=this.props.file.uniqueID;
+    let id=this.props.uniqueID;
     this.props.addNode(id);
-
   }
 
   render(){
     return(
       <Control
-        file={this.props.file}
         addNode={this.handleAddNode}
       />
     );
   }
 }
 
-const mapStateToProps = state => ({...state.node});
+const mapStateToProps = state => ({
+  uniqueID: state.node.uniqueID
+});
 
 const mapDispatchToProps = dispatch => ({
   addNode: (id)=>dispatch(addNode(id))

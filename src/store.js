@@ -7,9 +7,9 @@ export default function configureStore(){
     node: {
       file: {
         ideas: {},
-        connections: [],
-        uniqueID: 1
-      }
+        connections: []
+      },
+      uniqueID: 1
     }
   }
   return createStore(
