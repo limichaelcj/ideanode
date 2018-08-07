@@ -38,6 +38,17 @@ export default (state = {
           }
         }
       }
+    case 'DELETE_NODE':
+      var id=action.payload;
+      var ideas={...state.file.ideas}
+      delete ideas[id];
+      return {
+        ...state,
+        file: {
+          ...state.file,
+          ideas: ideas
+        }
+      }
     default:
       return state;
   }

@@ -4,16 +4,18 @@ import {connect} from 'react-redux';
 import Workspace from './Workspace';
 //actions
 import { moveNode } from '../actions/moveNode'
+import { deleteNode } from '../actions/deleteNode'
 //util
 import dragElement from '../util/dragElement'
 
 class WorkspaceContainer extends Component {
   constructor(props){
     super(props);
-    this.handleMouseDown=this.handleMouseDown.bind(this);
+    this.handleDragNode=this.handleDragNode.bind(this);
+    this.handleDeleteNode=this.handleDeleteNode.bind(this);
   }
 
-  handleMouseDown(e){
+  handleDragNode(e){
     e = e || window.event;
     e.preventDefault();
     dragElement(
@@ -23,6 +25,10 @@ class WorkspaceContainer extends Component {
       'mouseup', //closing mouse event
       this.props.moveNode //the redux action to be called to save state
     );
+  }
+
+  handleDeleteNode(e){
+    this.props.deleteNode(e.target.id.slice(4));
   }
 
   //translate file data to JSX
@@ -41,7 +47,11 @@ class WorkspaceContainer extends Component {
             height: i.dim.h,
             width: i.dim.w
           }}
-          onMouseDown={this.handleMouseDown}
+          onMouseDown={
+            this.props.client.mode==='view' ?
+            this.handleDragNode :
+            this.handleDeleteNode
+          }
         >ID={i.id}</div>
       );
     }
@@ -76,7 +86,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  moveNode: (id,x,y) => dispatch(moveNode(id,x,y))
+  moveNode: (id,x,y) => dispatch(moveNode(id,x,y)),
+  deleteNode: (id) => dispatch(deleteNode(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkspaceContainer);

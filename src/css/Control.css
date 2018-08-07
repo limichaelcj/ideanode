@@ -16,5 +16,8 @@ button {
 button:hover {
   background-color: #555;
 }
+button:focus {
+  outline: none;
+}
 
 /*# sourceMappingURL=Control.css.map */
