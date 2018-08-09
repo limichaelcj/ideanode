@@ -20,9 +20,9 @@ class WorkspaceContainer extends Component {
     e.preventDefault();
     dragElement(
       e.target, //element being dragged
-      e.clientX, //cursor current X position
-      e.clientY, //cursor current Y position
-      'mouseup', //closing mouse event
+      e.pageX, //cursor current X position
+      e.pageY, //cursor current Y position
+      'onmouseup', //closing mouse event
       this.props.moveNode //the redux action to be called to save state
     );
   }
@@ -58,14 +58,21 @@ class WorkspaceContainer extends Component {
     return ideaJSX;
   }
 
+  shouldComponentUpdate(nextProps){
+    if (this.props.cursor !== nextProps.cursor){
+      return false;
+    } else return true;
+  }
+
   componentDidUpdate(prevProps){
+    console.log('Update: Workspace')
     //When adding new node, enter drag element for new node
     if(prevProps.uniqueID===this.props.uniqueID-1){
       dragElement(
         document.getElementById('node'+prevProps.uniqueID),
-        this.props.client.x,
-        this.props.client.y,
-        'mousedown',
+        this.props.cursor.x,
+        this.props.cursor.y,
+        'onmousedown',
         this.props.moveNode
       )
     }

@@ -10,8 +10,41 @@ import { changeMode } from '../actions/changeMode'
 class ControlContainer extends Component {
   constructor(props){
     super(props);
+    this.handleKeyUp=this.handleKeyUp.bind(this);
     this.handleAddNode=this.handleAddNode.bind(this);
     this.handleDeleteNode=this.handleDeleteNode.bind(this);
+  }
+
+  handleKeyUp(e){
+    console.log('keypress')
+    e = e || window.event;
+    if(this.props.mode==='view'){
+      e.preventDefault();
+      if(e.shiftKey){
+        switch(e.keyCode){
+          case 65:
+            this.props.addNode(this.props.uniqueID, this.props.cursor.x, this.props.cursor.y);
+            break;
+          case 68:
+            this.props.changeMode('delete');
+            break;
+          default:
+        }
+      }
+    }
+    //not in view mode
+    else {
+      e.preventDefault();
+      switch(e.keyCode){
+        case 27:
+          this.props.changeMode('view');
+          break;
+        case 68:
+          if(this.props.mode==='delete') this.props.changeMode('view');
+          break;
+        default:
+      }
+    }
   }
 
   handleAddNode(e){
@@ -19,7 +52,6 @@ class ControlContainer extends Component {
     e.preventDefault();
     let button=e.target;
     button.onmouseup=(e)=>{
-      this.props.saveClientXY(e.pageX,e.pageY);
       this.props.addNode(this.props.uniqueID, e.pageX, e.pageY);
       button.onmouseup=null;
     };
@@ -27,13 +59,26 @@ class ControlContainer extends Component {
   }
 
   handleDeleteNode(e){
+    e = e || window.event;
+    e.preventDefault();
     if(this.props.mode==='view'){
-      this.props.saveClientXY(e.pageX,e.pageY);
       this.props.changeMode('delete');
     }
   }
 
+  componentDidMount(){
+    document.addEventListener('keydown',this.handleKeyUp);
+  }
+
+  shouldComponentUpdate(nextProps){
+    if (this.props.cursor !== nextProps.cursor){
+      return false;
+    } else return true;
+  }
+
   componentDidUpdate(prevProps){
+    console.log('Update: Control');
+    console.log(this.props.mode+' mode');
     //if not in view mode, add click listener to control area to revert to view mode
     if(this.props.mode !== 'view'){
       document.getElementById('App-header').onclick=()=>this.props.changeMode('view');
@@ -44,6 +89,10 @@ class ControlContainer extends Component {
     if (nextProps.mode === 'view'){
       document.getElementById('App-header').onclick=null;
     }
+  }
+
+  componentWillUnmount(){
+    document.removeEventListener('keydown',this.handleKeyUp);
   }
 
   render(){

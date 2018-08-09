@@ -8,16 +8,52 @@ import ControlContainer from './components/ControlContainer'
 import WorkspaceContainer from './components/WorkspaceContainer'
 import Tooltip from './components/Tooltip'
 
-const App = (props)=> (
-  <div className="App">
-    <WorkspaceContainer />
-    <header id='App-header' className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <h1 className="App-title">IdeaNode</h1>
-      <ControlContainer />
-    </header>
-    <Tooltip />
-  </div>
-);
+class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      x: 100,
+      y: 100
+    }
+    this.globalHandleMouseMove=this.globalHandleMouseMove.bind(this);
+  }
+
+  globalHandleMouseMove(e){
+    this.setState({
+      x: e.pageX,
+      y: e.pageY
+    });
+  }
+
+  componentDidMount(){
+    document.addEventListener('mousemove', this.globalHandleMouseMove);
+  }
+
+  componentDidUpdate(){
+    console.log('Update: App')
+  }
+
+  componetWillUnmount(){
+    document.removeEventListener('mousemove', this.globalHandleMouseMove);
+  }
+
+  render(){
+    return(
+      <div className="App">
+        <WorkspaceContainer
+          cursor={this.state}
+        />
+        <header id='App-header' className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h1 className="App-title">IdeaNode</h1>
+          <ControlContainer
+            cursor={this.state}
+          />
+        </header>
+        <Tooltip />
+      </div>
+    );
+  }
+}
 
 export default App;
