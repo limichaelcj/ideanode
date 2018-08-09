@@ -1,4 +1,5 @@
-function dragElement(elem,ix,iy,closeEvent,action){
+function dragElement(elem,ix,iy,closeEvent,callback){
+  //initial cursor position
   var cx=ix;
   var cy=iy;
   document.onmousemove=(e)=>requestAnimationFrame(()=>dragMove(e));
@@ -17,7 +18,7 @@ function dragElement(elem,ix,iy,closeEvent,action){
     document.onmousemove=null;
     document[closeEvent]=null;
     //store position in state
-    action(elem.id.slice(4),elem.offsetLeft,elem.offsetTop);
+    callback(elem.id.slice(4),elem.offsetLeft,elem.offsetTop);
   }
 }
 

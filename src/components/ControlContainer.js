@@ -4,7 +4,6 @@ import {connect} from 'react-redux'
 import Control from './Control'
 //actions
 import { addNode } from '../actions/addNode'
-import { saveClientXY } from '../actions/saveClientXY'
 import { changeMode } from '../actions/changeMode'
 
 class ControlContainer extends Component {
@@ -16,7 +15,6 @@ class ControlContainer extends Component {
   }
 
   handleKeyUp(e){
-    console.log('keypress')
     e = e || window.event;
     if(this.props.mode==='view'){
       e.preventDefault();
@@ -52,8 +50,8 @@ class ControlContainer extends Component {
     e.preventDefault();
     let button=e.target;
     button.onmouseup=(e)=>{
-      this.props.addNode(this.props.uniqueID, e.pageX, e.pageY);
       button.onmouseup=null;
+      this.props.addNode(this.props.uniqueID, e.pageX, e.pageY);
     };
     //add new node at location of cursor
   }
@@ -78,15 +76,14 @@ class ControlContainer extends Component {
 
   componentDidUpdate(prevProps){
     console.log('Update: Control');
-    console.log(this.props.mode+' mode');
     //if not in view mode, add click listener to control area to revert to view mode
-    if(this.props.mode !== 'view'){
+    if(this.props.mode === 'delete'){
       document.getElementById('App-header').onclick=()=>this.props.changeMode('view');
     }
   }
 
   componentWillUpdate(nextProps){
-    if (nextProps.mode === 'view'){
+    if (nextProps.mode !== 'delete'){
       document.getElementById('App-header').onclick=null;
     }
   }
@@ -113,7 +110,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   addNode: (id,x,y)=>dispatch(addNode(id,x,y)),
-  saveClientXY: (x,y)=>dispatch(saveClientXY(x,y)),
   changeMode: (mode)=>dispatch(changeMode(mode))
 });
 

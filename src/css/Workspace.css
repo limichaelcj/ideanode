@@ -24,9 +24,24 @@
   background-color: steelblue;
   border-radius: 3px;
   border: 1px solid gray;
+  display: grid;
+  grid-template-rows: 16px 1fr 12px;
+  grid-gap: 4px;
+  padding: 4px 8px;
+  text-align: left;
 }
 .Node:active {
   box-shadow: 0 0 8px darkslateblue;
+}
+.Node header {
+  font-size: 14px;
+  font-weight: bold;
+}
+.Node p {
+  font-size: 12px;
+}
+.Node footer {
+  font-size: 10px;
 }
 
 rect {

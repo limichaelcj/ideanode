@@ -18,7 +18,7 @@ export const addNode = (id,x,y) => {
       text: {
         head: 'New Idea',
         body: 'Text',
-        foot: 'Info'
+        foot: id
       },
       input: [],
       output: []
