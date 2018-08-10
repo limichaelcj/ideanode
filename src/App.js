@@ -12,8 +12,8 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      x: 100,
-      y: 100
+      x: 0,
+      y: 0
     }
     this.globalHandleMouseMove=this.globalHandleMouseMove.bind(this);
   }
@@ -43,7 +43,7 @@ class App extends Component {
         <WorkspaceContainer
           cursor={this.state}
         />
-        <header id='App-header' className="App-header">
+        <header id='App-control' className="App-control">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">IdeaNode</h1>
           <ControlContainer

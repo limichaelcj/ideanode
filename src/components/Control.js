@@ -13,7 +13,7 @@ const Control = (props)=> {
       </button>
       <button
         id='button-deleteNode'
-        onClick={props.deleteNode}
+        onMouseDown={props.deleteNode}
       >Delete</button>
     </div>
   );

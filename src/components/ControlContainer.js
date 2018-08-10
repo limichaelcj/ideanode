@@ -48,9 +48,9 @@ class ControlContainer extends Component {
   handleAddNode(e){
     e = e || window.event;
     e.preventDefault();
-    let button=e.target;
-    button.onmouseup=(e)=>{
-      button.onmouseup=null;
+    let b=e.target;
+    b.onmouseup=(e)=>{
+      b.onmouseup=null;
       this.props.addNode(this.props.uniqueID, e.pageX, e.pageY);
     };
     //add new node at location of cursor
@@ -59,8 +59,13 @@ class ControlContainer extends Component {
   handleDeleteNode(e){
     e = e || window.event;
     e.preventDefault();
-    if(this.props.mode==='view'){
-      this.props.changeMode('delete');
+    //add nested mouseup event to ensure no double hits
+    let b=e.target;
+    b.onmouseup=(f)=>{
+      b.onmouseup=null;
+      if(this.props.mode==='view'){
+        this.props.changeMode('delete');
+      }
     }
   }
 
@@ -78,13 +83,19 @@ class ControlContainer extends Component {
     console.log('Update: Control');
     //if not in view mode, add click listener to control area to revert to view mode
     if(this.props.mode === 'delete'){
-      document.getElementById('App-header').onclick=()=>this.props.changeMode('view');
+      let b=document.getElementById('App-control');
+      b.onmousedown=(e)=>{
+        b.onmouseup=(e)=>{
+          b.onmouseup=null;
+            this.props.changeMode('view');
+        }
+      };
     }
   }
 
   componentWillUpdate(nextProps){
     if (nextProps.mode !== 'delete'){
-      document.getElementById('App-header').onclick=null;
+      document.getElementById('App-control').onmousedown=null;
     }
   }
 
