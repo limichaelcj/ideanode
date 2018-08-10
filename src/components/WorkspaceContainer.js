@@ -9,28 +9,32 @@ import { moveNode } from '../actions/moveNode'
 import { deleteNode } from '../actions/deleteNode'
 //util
 import dragElement from '../util/dragElement'
+import getNode from '../util/getNode'
 
 class WorkspaceContainer extends Component {
   constructor(props){
     super(props);
-    this.handleDragNode=this.handleDragNode.bind(this);
-    this.handleDeleteNode=this.handleDeleteNode.bind(this);
+    this.handleMouseDown=this.handleMouseDown.bind(this);
   }
 
-  handleDragNode(e){
+  handleMouseDown(e){
     e = e || window.event;
     e.preventDefault();
-    dragElement(
-      e.target, //element being dragged
-      e.pageX, //cursor current X position
-      e.pageY, //cursor current Y position
-      'onmouseup', //closing mouse event
-      this.props.moveNode //callback
-    );
-  }
-
-  handleDeleteNode(e){
-    this.props.deleteNode(e.target.id.slice(4));
+    let id=e.target.dataset.id;
+    switch(this.props.client.mode){
+      case 'delete':
+        this.props.deleteNode(id);
+        break;
+      case 'view':
+        dragElement(
+          getNode(id), //element being dragged
+          e.pageX, //cursor current X position
+          e.pageY, //cursor current Y position
+          'onmouseup', //closing mouse event
+          this.props.moveNode //callback
+        );
+      default:
+    }
   }
 
   //translate file data to JSX
@@ -41,7 +45,7 @@ class WorkspaceContainer extends Component {
       ideaJSX.push(
         <IdeaNode
           key={i.id}
-          id={'node'+i.id}
+          id={i.id}
           class='Node'
           dim={{
             top: i.dim.y,
@@ -49,11 +53,7 @@ class WorkspaceContainer extends Component {
             height: i.dim.h,
             width: i.dim.w
           }}
-          mousedown={
-            this.props.client.mode==='view' ?
-            this.handleDragNode :
-            this.handleDeleteNode
-          }
+          mousedown={this.handleMouseDown}
           text={i.text}
         />
       );
@@ -72,7 +72,7 @@ class WorkspaceContainer extends Component {
     //When adding new node, enter drag element for new node
     if(prevProps.uniqueID!==this.props.uniqueID){
       dragElement(
-        document.getElementById('node'+prevProps.uniqueID),
+        getNode(prevProps.uniqueID),
         this.props.cursor.x,
         this.props.cursor.y,
         'onmousedown',

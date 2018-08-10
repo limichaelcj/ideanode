@@ -1,3 +1,10 @@
+$Node-bg: steelblue;
+$Node-border: gray;
+$Node-line: #41687f;
+$Node-text: black;
+$Node-glow: darkslateblue;
+
+
 #Workspace {
   position: relative;
   height: 100vh;
@@ -22,26 +29,45 @@
 
 .Node {
   position: absolute;
-  background-color: steelblue;
+  background-color: $Node-bg;
   border-radius: 3px;
-  border: 1px solid gray;
+  border: 1px solid $Node-border;
   display: grid;
-  grid-template-rows: 16px 1fr 12px;
+  grid-template-rows: 28px 1fr 20px;
   grid-gap: 4px;
-  padding: 4px 8px;
+  padding: 5px;
   text-align: left;
+  font-family: "Inconsolata", monospace;
   &:active{
-    box-shadow: 0 0 8px darkslateblue;
-  }
-  header {
-    font-size: 14px;
-    font-weight: bold;
+    box-shadow: 0 0 8px $Node-glow;
   }
   p {
-    font-size: 12px;
+    padding: 0 6px;
+    margin: 0;
+    color: black;
+    background: transparent;
   }
-  footer {
+  .Node-head {
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    border-bottom: 1px solid $Node-line;
+  }
+  .Node-body {
+    font-size: 12px;
+    overflow-x: hidden;
+    resize: none;
+    word-wrap: break-word;
+    word-break: break-all;
+    white-space: pre-wrap;
+  }
+  .Node-foot {
+    padding-top: 4px;
     font-size: 10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    border-top: 1px solid $Node-line;
   }
 }
 

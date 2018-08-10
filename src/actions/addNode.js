@@ -10,10 +10,10 @@ export const addNode = (id,x,y) => {
     payload: {
       id: id,
       dim: {
-        x: x-50,
-        y: y-50,
-        h: 100,
-        w: 100
+        x: x-60,
+        y: y-60,
+        h: 120,
+        w: 120
       },
       text: {
         head: 'New Idea',

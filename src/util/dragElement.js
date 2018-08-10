@@ -1,4 +1,4 @@
-function dragElement(elem,ix,iy,closeEvent,callback){
+const dragElement = (elem,ix,iy,closeEvent,callback)=>{
   //initial cursor position
   var cx=ix;
   var cy=iy;
