@@ -13,7 +13,8 @@ class App extends Component {
     super(props);
     this.state = {
       x: 0,
-      y: 0
+      y: 0,
+      edit: null
     }
     this.globalHandleMouseMove=this.globalHandleMouseMove.bind(this);
   }

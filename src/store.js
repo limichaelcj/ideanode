@@ -12,9 +12,7 @@ export default function configureStore(){
       uniqueID: 1
     },
     client: {
-      mode: 'view',
-      x: 0,
-      y: 0
+      mode: 'view'
     }
   }
   return createStore(

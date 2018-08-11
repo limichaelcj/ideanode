@@ -31,14 +31,12 @@
   text-align: left;
   font-family: "Inconsolata", monospace;
 }
-.Node:active {
-  box-shadow: 0 0 8px darkslateblue;
+.Node:hover .Node-edit-button {
+  opacity: 1;
 }
 .Node p {
-  padding: 0 6px;
   margin: 0;
-  color: black;
-  background: transparent;
+  padding: 0 6px;
 }
 .Node .Node-head {
   font-size: 16px;
@@ -61,6 +59,47 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   border-top: 1px solid #41687f;
+}
+
+.Node-view:active {
+  box-shadow: 0 0 10px 2px darkslateblue;
+}
+
+.Node-edit {
+  box-shadow: 0 0 10px yellow;
+}
+.Node-edit input,
+.Node-edit textarea {
+  background: transparent;
+  border: none;
+  margin: 0;
+  padding: 0 6px;
+  width: 100%;
+  color: ivory;
+}
+
+.Node-edit-button {
+  position: absolute;
+  top: 0;
+  left: calc(100% + 2px);
+  background-color: rgba(220, 220, 220, 0.7);
+  border-radius: 2px;
+  color: #222;
+  font-size: 12px;
+  height: 18px;
+  width: 18px;
+  opacity: 0;
+  padding: 0 3px;
+  cursor: pointer;
+}
+
+.Node-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
 }
 
 rect {

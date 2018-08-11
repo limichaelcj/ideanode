@@ -49,6 +49,24 @@ export default (state = {
           ideas: ideas
         }
       }
+    case 'CHANGE_TEXT':
+      var id=action.payload.id;
+      return {
+        ...state,
+        file: {
+          ...state.file,
+          ideas: {
+            ...state.file.ideas,
+            [id]: {
+              ...state.file.ideas[id],
+              text: {
+                ...state.file.ideas[id].text,
+                [action.payload.section]: action.payload.text
+              }
+            }
+          }
+        }
+      }
     default:
       return state;
   }

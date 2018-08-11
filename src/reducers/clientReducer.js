@@ -1,7 +1,5 @@
 export default (state = {
-  mode: 'view',
-  x: 0,
-  y: 0
+  mode: 'view'
 },action) => {
   switch (action.type){
     case 'SAVE_CLIENT_XY':

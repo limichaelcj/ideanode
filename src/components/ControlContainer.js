@@ -17,7 +17,6 @@ class ControlContainer extends Component {
   handleKeyUp(e){
     e = e || window.event;
     if(this.props.mode==='view'){
-      e.preventDefault();
       if(e.shiftKey){
         switch(e.keyCode){
           case 65:
@@ -32,13 +31,12 @@ class ControlContainer extends Component {
     }
     //not in view mode
     else {
-      e.preventDefault();
       switch(e.keyCode){
         case 27:
           this.props.changeMode('view');
           break;
         case 68:
-          if(this.props.mode==='delete') this.props.changeMode('view');
+          if(this.props.mode==='delete'&&e.shiftKey) this.props.changeMode('view');
           break;
         default:
       }
