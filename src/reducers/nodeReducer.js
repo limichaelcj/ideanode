@@ -38,6 +38,25 @@ export default (state = {
           }
         }
       }
+    case 'RESIZE_NODE':
+      var id=action.payload.id;
+      return {
+        ...state,
+        file: {
+          ...state.file,
+          ideas: {
+            ...state.file.ideas,
+            [id]: {
+              ...state.file.ideas[id],
+              dim: {
+                ...state.file.ideas[id].dim,
+                w: action.payload.w,
+                h: action.payload.h
+              }
+            }
+          }
+        }
+      }
     case 'DELETE_NODE':
       var id=action.payload;
       var ideas={...state.file.ideas}
@@ -60,8 +79,9 @@ export default (state = {
             [id]: {
               ...state.file.ideas[id],
               text: {
-                ...state.file.ideas[id].text,
-                [action.payload.section]: action.payload.text
+                head: action.payload.head,
+                body: action.payload.body,
+                foot: action.payload.foot
               }
             }
           }

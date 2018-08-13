@@ -32,6 +32,25 @@ class ControlContainer extends Component {
     //not in view mode
     else {
       switch(e.keyCode){
+        case 9:
+          e.preventDefault();
+          if(this.props.mode==='edit'){
+            let next = nextSection(document.activeElement);
+            document.querySelectorAll("[data-section="+next+"]")[0].focus();
+            function nextSection(activeElement){
+              let section=activeElement.className.slice(5);
+              switch(section){
+                case 'head':
+                  return 'body';
+                case 'body':
+                  return 'foot';
+                case 'foot':
+                  return 'head';
+                default:
+              }
+            }
+          }
+          break;
         case 27:
           this.props.changeMode('view');
           break;

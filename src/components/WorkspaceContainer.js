@@ -6,6 +6,7 @@ import IdeaNode from './IdeaNode'
 //actions
 import { changeMode } from '../actions/changeMode'
 import { moveNode } from '../actions/moveNode'
+import { resizeNode } from '../actions/resizeNode'
 import { deleteNode } from '../actions/deleteNode'
 import { changeText } from '../actions/changeText'
 //util
@@ -21,25 +22,39 @@ class WorkspaceContainer extends Component {
     this.handleMouseDown=this.handleMouseDown.bind(this);
     this.handleEditButton=this.handleEditButton.bind(this);
     this.clickCheck=this.clickCheck.bind(this);
-    this.handleChangeText=this.handleChangeText.bind(this);
   }
 
   handleMouseDown(e){
     e = e || window.event;
-    e.preventDefault();
     let id=e.target.dataset.id;
     switch(this.props.client.mode){
       case 'delete':
         this.props.deleteNode(id);
         break;
       case 'view':
-        dragElement(
-          getNode(id), //element being dragged
-          e.pageX, //cursor current X position
-          e.pageY, //cursor current Y position
-          'onmouseup', //closing mouse event
-          this.props.moveNode //callback
-        );
+        e.preventDefault();
+        if(e.target.dataset.op==='overlay'){
+          dragElement(
+            getNode(id), //element being dragged
+            e.pageX, //cursor current X position
+            e.pageY, //cursor current Y position
+            'drag', //the operation type for the drag
+            {xLower: 0, xUpper: 1900, yLower: 0, yUpper: 900},
+            'onmouseup', //closing mouse event
+            this.props.moveNode //callback
+          );
+        } else if (e.target.dataset.op==='resizer'){
+          dragElement(
+            getNode(id), //element being dragged
+            e.pageX, //cursor current X position
+            e.pageY, //cursor current Y position
+            'resize', //the operation type for the drag
+            {xLower: 100, xUpper: 800, yLower: 100, yUpper: 800},
+            'onmouseup', //closing mouse event
+            this.props.resizeNode //callback
+          );
+        }
+        break;
       default:
     }
   }
@@ -49,13 +64,6 @@ class WorkspaceContainer extends Component {
     this.props.changeMode('edit');
   }
 
-  handleChangeText(e){
-    let id=e.target.dataset.id;
-    let section=e.target.dataset.section;
-    let text=e.target.value;
-    this.props.changeText(id,section,text);
-  }
-
   //translate file data to JSX
   constructIdeas(ideas){
     let ideaJSX=[];
@@ -63,6 +71,26 @@ class WorkspaceContainer extends Component {
     for(let key in ideas){
       let i=ideas[key];
       let editing = (this.state.edit===key);
+      //conditional renders for texts
+      let text= [];
+      if (editing) {
+        text.push(<input className='Node-head' data-id={i.id}
+          data-section='head' defaultValue={i.text.head}
+          id={'node'+i.id+'-head'} />);
+        text.push(<textarea className='Node-body' data-id={i.id}
+          data-section='body' defaultValue={i.text.body}
+          id={'node'+i.id+'-body'} />);
+        text.push(<input className='Node-foot' data-id={i.id}
+          data-section='foot' defaultValue={i.text.foot}
+          id={'node'+i.id+'-foot'} />);
+      } else {
+        text.push(<p className='Node-head' id={'node'+i.id+'-head'}
+          data-id={i.id} >{i.text.head}</p>);
+        text.push(<p className='Node-body' id={'node'+i.id+'-body'}
+          data-id={i.id} >{i.text.body}</p>);
+        text.push(<p className='Node-foot' id={'node'+i.id+'-foot'}
+          data-id={i.id} >{i.text.foot}</p>);
+      }
       //class: if local state.edit == node's id, give it edit mode style
       //overlay: only render if in view mode
       //editButton: only show if in view mode
@@ -77,43 +105,29 @@ class WorkspaceContainer extends Component {
             height: i.dim.h,
             width: i.dim.w
           }}
-          head={editing?
-            <input className='Node-head' data-id={i.id}
-              data-section='head' value={i.text.head}
-              onChange={this.handleChangeText}
-            />
-            : <p className='Node-head' data-id={i.id}>{i.text.head}</p>
-          }
-          body={editing?
-            <textarea className='Node-body' data-id={i.id}
-              data-section='body' value={i.text.body}
-              onChange={this.handleChangeText}
-            />
-            : <p className='Node-body' data-id={i.id}>{i.text.body}</p>
-          }
-          foot={editing?
-            <input className='Node-foot' data-id={i.id}
-              data-section='foot' value={i.text.foot}
-              onChange={this.handleChangeText}
-            />
-            : <p className='Node-foot' data-id={i.id}>{i.text.foot}</p>
-          }
+          editing={editing}
+          head={i.text.head}
+          body={i.text.body}
+          foot={i.text.foot}
           overlay={
             mode==='view' || mode==='delete'?
             <div
               className="Node-overlay"
               onMouseDown={this.handleMouseDown}
-              data-id={i.id}
+              data-id={i.id} data-op='overlay'
               style={mode==='view'?{cursor: 'move'}:null}
             /> : null
           }
           editButton={mode==='view'?
-            <div className='Node-edit-button'
-              data-id={i.id}
+            <div className='Node-edit-button' data-id={i.id}
               onMouseDown={this.handleEditButton}
             ><i className='fa fa-edit' data-id={i.id}></i></div> : null
           }
-          text={i.text}
+          resizer={mode==='view'?
+            <div className='Node-resizer' data-id={i.id}
+              data-op='resizer' onMouseDown={this.handleMouseDown} />
+            : null
+          }
         />
       );
     }
@@ -144,6 +158,8 @@ class WorkspaceContainer extends Component {
         getNode(prevProps.uniqueID),
         this.props.cursor.x,
         this.props.cursor.y,
+        'drag',
+        {xLower: 0, xUpper: 1900, yLower: 0, yUpper: 900},
         'onmousedown',
     //callback, make sure to make inner onmouseup to eliminate double hit errors
         (id,x,y)=>{
@@ -154,10 +170,22 @@ class WorkspaceContainer extends Component {
         }
       )
     }
+    //when going into edit mode
+    if(prevProps.client.mode==='view'&&this.props.client.mode==='edit'){
+      document.querySelectorAll("[data-section='body']")[0].focus();
+    }
   }
 
   componentWillUpdate(nextProps, nextState){
-    if (nextProps.client.mode==='view') this.state.edit=null;
+    //switch from edit to view mode
+    if (this.props.client.mode==='edit' && nextProps.client.mode==='view') {
+      let id=this.state.edit;
+      let head=document.getElementById('node'+id+'-head').value;
+      let body=document.getElementById('node'+id+'-body').value;
+      let foot=document.getElementById('node'+id+'-foot').value;
+      this.props.changeText(id, head, body, foot);
+      this.state.edit=null;
+    }
   }
 
   componentWillUnmout(){
@@ -181,8 +209,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   changeMode: (mode)=>dispatch(changeMode(mode)),
   moveNode: (id,x,y) => dispatch(moveNode(id,x,y)),
+  resizeNode: (id,w,h) => dispatch(resizeNode(id,w,h)),
   deleteNode: (id) => dispatch(deleteNode(id)),
-  changeText: (id,section,text) => dispatch(changeText(id,section,text))
+  changeText: (id,head,body,foot) => dispatch(changeText(id,head,body,foot))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkspaceContainer);
