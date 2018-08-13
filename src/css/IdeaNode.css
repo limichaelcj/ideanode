@@ -1,0 +1,101 @@
+.Node {
+  position: absolute;
+  background-color: steelblue;
+  border-radius: 3px;
+  border: 1px solid gray;
+  display: grid;
+  grid-template-rows: 28px 1fr 20px;
+  grid-gap: 4px;
+  padding: 5px;
+  text-align: left;
+  font-family: "Inconsolata", monospace;
+}
+.Node:hover .Node-edit-button, .Node:hover .Node-resizer {
+  opacity: 1;
+}
+.Node p {
+  margin: 0;
+  padding: 0 6px;
+}
+.Node .Node-head {
+  font-size: 16px;
+  font-weight: bold;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border-bottom: 1px solid #41687f;
+}
+.Node .Node-body {
+  font-size: 12px;
+  overflow-x: hidden;
+  resize: none;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+.Node .Node-foot {
+  padding-top: 4px;
+  font-size: 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border-top: 1px solid #41687f;
+}
+
+.Node-view:active {
+  box-shadow: 0 0 10px 2px #4f4baa;
+}
+
+.Node-edit {
+  box-shadow: 0 0 8px #fff8e1;
+}
+.Node-edit input,
+.Node-edit textarea {
+  background: transparent;
+  border: none;
+  margin: 0;
+  padding: 0 6px;
+  width: 100%;
+  color: #222;
+  user-select: text;
+}
+.Node-edit input:focus,
+.Node-edit textarea:focus {
+  outline-color: ivory;
+}
+
+.Node-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+}
+
+.Node-edit-button {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: rgba(220, 220, 220, 0.7);
+  border-radius: 2px;
+  color: #222;
+  font-size: 12px;
+  height: 18px;
+  width: 18px;
+  opacity: 0;
+  padding: 0 3px;
+  cursor: pointer;
+}
+
+.Node-resizer {
+  position: absolute;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  bottom: -6px;
+  right: -6px;
+  background-color: cornflowerblue;
+  opacity: 0;
+  cursor: nwse-resize;
+}
+
+/*# sourceMappingURL=IdeaNode.css.map */

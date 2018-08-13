@@ -1,10 +1,21 @@
 #Control {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-
+  height: 100%;
+  padding: 0 8px;
+  overflow: hidden;
 }
 
-p {
-  margin: auto 5px;
+button {
+  background-color: #222;
+  padding: 0 10px;
+  height: 100%;
+  color: white;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    background-color: #555;
+  }
+  &:focus {
+    outline: none;
+  }
 }
